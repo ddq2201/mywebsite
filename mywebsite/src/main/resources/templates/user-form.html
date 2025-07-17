@@ -1,0 +1,16 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <h1 th:text="${user.id != null} ? '✏️ Edit User' : '➕ Add New User'">User Form</h1>
+
+    <form th:action="${user.id != null} ? '/users/update' : '/users'" method="post" th:object="${user}">
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Name:</label><br/>
+        <input type="text" th:field="*{name}" required /><br/><br/>
+
+        <label>Email:</label><br/>
+        <input type="email" th:field="*{email}" required /><br/><br/>
+
+        <button type="submit" class="button">💾 Save</button>
+        <a href="/users" class="button">← Back</a>
+    </form>
+</div>

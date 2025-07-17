@@ -1,0 +1,35 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <h2>📝 Notes</h2>
+
+    <!-- Add or Edit Note Form -->
+    <form method="post" th:action="${noteToEdit != null} ? '/notes/update' : '/notes'">
+        <input type="hidden" name="id" th:value="${noteToEdit?.id}" />
+
+        <!-- Use 'content' to match @RequestParam("content") -->
+        <textarea name="content" rows="4" cols="60" placeholder="Write your note here..." required
+                  th:text="${noteToEdit?.content}"></textarea><br><br>
+
+        <button class="button" type="submit"
+                th:text="${noteToEdit != null} ? '✏️ Update Note' : '💾 Save Note'"></button>
+
+        <!-- Show cancel button only during edit -->
+        <a th:if="${noteToEdit != null}" class="button" href="/notes">Cancel</a>
+    </form>
+
+    <!-- Display list of saved notes -->
+    <h3 style="margin-top:2em;">🗂️ Saved Notes</h3>
+    <ul>
+        <li th:each="n : ${notes}" style="margin-bottom: 1em;">
+            <span th:text="${n.content}"></span>
+
+            <!-- Delete Form -->
+            <form th:action="@{/notes/delete/{id}(id=${n.id})}" method="post" style="display:inline;">
+                <button class="button" style="background-color:#e74c3c;"
+                        onclick="return confirm('Delete this note?')">🗑️ Delete</button>
+            </form>
+
+            <!-- Edit Button -->
+            <a class="button" th:href="@{/notes/edit/{id}(id=${n.id})}">✏️ Edit</a>
+        </li>
+    </ul>
+</div>

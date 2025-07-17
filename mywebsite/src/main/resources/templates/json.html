@@ -1,0 +1,41 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <div class="json-box">
+        <h2>🛠️ JSON Beautifier</h2>
+        <textarea id="inputJson" rows="15" cols="120" placeholder="Paste raw JSON here..."></textarea>
+        <br><br>
+        <button class="button" onclick="beautifyJson()">✨ Beautify</button>
+        <button class="button" onclick="downloadJson()">⬇️ Download</button>
+        <br><br>
+        <textarea id="outputJson" rows="15" cols="120" readonly placeholder="Formatted JSON will appear here..."></textarea>
+    </div>
+
+    <script>
+        function beautifyJson() {
+            try {
+                const input = document.getElementById("inputJson").value;
+                const obj = JSON.parse(input);
+                const pretty = JSON.stringify(obj, null, 4);
+                document.getElementById("outputJson").value = pretty;
+            } catch (e) {
+                alert("Invalid JSON!");
+            }
+        }
+
+        function downloadJson() {
+            const output = document.getElementById("outputJson").value;
+            if (!output) {
+                alert("Nothing to download. Please beautify first.");
+                return;
+            }
+            const blob = new Blob([output], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "beautified.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</div>

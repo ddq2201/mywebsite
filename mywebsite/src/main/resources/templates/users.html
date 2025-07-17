@@ -1,0 +1,14 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <h1>User List</h1>
+    <a class="button" href="/users/new">➕ Add New User</a>
+    <div th:each="user : ${users}" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+        <div>
+            <strong th:text="${user.name}">Name</strong> |
+            <span th:text="${user.email}">Email</span>
+        </div>
+        <div>
+            <a class="button" style="background-color: #f39c12;" th:href="@{/users/edit/{id}(id=${user.id})}">✏️ Edit</a>
+            <a class="button" style="background-color: #e74c3c;" th:href="@{/users/delete/{id}(id=${user.id})}" onclick="return confirm('Are you sure?')">🗑 Delete</a>
+        </div>
+    </div>
+</div>

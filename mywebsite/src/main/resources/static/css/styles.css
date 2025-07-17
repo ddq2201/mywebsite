@@ -1,0 +1,299 @@
+/* Base styles for the entire page */
+body {
+    /*background: url('/images/background.jpg') no-repeat center center;*/
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6fa;
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 1em;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+nav {
+    margin-top: 0.5em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 1em;
+    font-weight: 500;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    position: relative;
+    background: url('/images/background.jpg') no-repeat center center;
+    background-size: cover;
+    padding: 2em;
+    margin: 1em auto;
+    max-width: 960px;
+    border-radius: 12px;
+    color: #f1f1f1;
+    z-index: 1;
+    overflow: hidden;
+}
+
+main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); /* dark overlay */
+    z-index: -1;
+}
+
+footer {
+    background-color: #ecf0f1;
+    padding: 1em;
+    text-align: center;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+/* Reusable button style for links */
+.button {
+    display: inline-block;
+    padding: 0.625em 1em; /* 10px 16px */
+    margin: 0.625em 0.375em; /* 10px 6px */
+    background-color: #3498db;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
+#game button {
+    font-size: 1.2em;
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+}
+
+#game button:hover {
+    background-color: #2980b9;
+}
+
+#result {
+    color: #eee;      /* light text for dark backgrounds */
+    font-weight: bold;
+    margin-top: 1em;
+    font-size: 1.2em;
+}
+
+.materials-box {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #f0f0f0;
+    padding: 2em;
+    border-radius: 16px;
+    max-width: 700px;
+    margin: auto;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+}
+
+.materials-box ul {
+    list-style-type: disc;
+    padding-left: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+}
+
+.materials-box li {
+    margin-bottom: 0.8em;
+}
+
+.materials-box a {
+    color: #4fc3f7;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.materials-box a:hover {
+    text-decoration: underline;
+}
+
+.field-menu {
+    text-align: center;
+    color: #fff;
+    margin: 2em auto;
+    max-width: 800px;
+}
+
+.field {
+    background: linear-gradient(#3a773f, #2d5d33); /* green pitch */
+    border: 5px solid white;
+    padding: 2em;
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 2px white;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.zone {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+.zone.defense::before {
+    content: "🛡️ Defense";
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.zone.midfield::before {
+    content: "🎯 Midfield";
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.zone.attack::before {
+    content: "🎮 Attack";
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.zone.bench::before {
+    content: "📦 Bench";
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+.zone button {
+    background-color: #4caf50; /* green */
+    color: white;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.json-box {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+textarea {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 1em;
+    border-radius: 8px;
+    border: 1px solid #444;
+    resize: vertical;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.site-header {
+    background-color: #3498db;
+    color: white;
+    padding: 1em;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    color: white;
+    cursor: pointer;
+}
+
+.nav {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive dropdown menu */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        margin-top: 1em;
+    }
+
+    .nav.show {
+        display: flex;
+    }
+}
+
+
+
+
+
+
+
+
+
+

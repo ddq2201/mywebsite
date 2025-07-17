@@ -1,0 +1,124 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content" style="text-align:center;">
+    <h2>🐉 Dragon Flight</h2>
+    <canvas id="gameCanvas" width="400" height="400"
+            style="border:1px solid #000; background:#1e1e2f;"></canvas>
+    <p>Use LEFT and RIGHT arrow keys to avoid fireballs!</p>
+    <p>Score: <span id="score">0</span></p>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Dragon (player)
+        const dragon = {
+            x: width / 2 - 20,
+            y: height - 60,
+            width: 40,
+            height: 40,
+            speed: 7,
+            dx: 0,
+        };
+
+        // Fireballs (falling obstacles)
+        const fireballs = [];
+        const fireballSize = 20;
+        let fireballSpeed = 3;
+
+        let score = 0;
+        let gameOver = false;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') dragon.dx = -dragon.speed;
+            else if (e.key === 'ArrowRight') dragon.dx = dragon.speed;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') dragon.dx = 0;
+        });
+
+        function createFireball() {
+            const x = Math.random() * (width - fireballSize);
+            fireballs.push({ x: x, y: -fireballSize, size: fireballSize });
+        }
+
+        function update() {
+            if (gameOver) return;
+
+            // Move dragon
+            dragon.x += dragon.dx;
+            if (dragon.x < 0) dragon.x = 0;
+            if (dragon.x + dragon.width > width) dragon.x = width - dragon.width;
+
+            // Move fireballs
+            for (let i = fireballs.length -1; i >= 0; i--) {
+                fireballs[i].y += fireballSpeed;
+                if (fireballs[i].y > height) {
+                    fireballs.splice(i, 1);
+                    score++;
+                    document.getElementById('score').textContent = score;
+
+                    // Speed up every 5 points
+                    if (score % 5 === 0) fireballSpeed += 0.5;
+                } else if (collides(dragon, fireballs[i])) {
+                    gameOver = true;
+                    alert('🔥 Game Over! Your score: ' + score);
+                    resetGame();
+                    return;
+                }
+            }
+        }
+
+        function collides(rect1, rect2) {
+            return !(
+                rect1.x > rect2.x + rect2.size ||
+                rect1.x + rect1.width < rect2.x ||
+                rect1.y > rect2.y + rect2.size ||
+                rect1.y + rect1.height < rect2.y
+            );
+        }
+
+        function draw() {
+            // Clear screen
+            ctx.fillStyle = '#1e1e2f';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw dragon (green square)
+            ctx.fillStyle = '#4caf50';
+            ctx.fillRect(dragon.x, dragon.y, dragon.width, dragon.height);
+
+            // Draw fireballs (red circles)
+            ctx.fillStyle = '#e53935';
+            fireballs.forEach(fb => {
+                ctx.beginPath();
+                ctx.arc(fb.x + fb.size / 2, fb.y + fb.size / 2, fb.size / 2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function resetGame() {
+            fireballs.length = 0;
+            score = 0;
+            fireballSpeed = 3;
+            gameOver = false;
+            dragon.x = width / 2 - dragon.width / 2;
+            dragon.dx = 0;
+            document.getElementById('score').textContent = score;
+        }
+
+        // Spawn fireballs every 1.2 seconds
+        setInterval(() => {
+            if (!gameOver) createFireball();
+        }, 1200);
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</div>

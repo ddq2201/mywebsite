@@ -1,0 +1,128 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content" style="text-align:center;">
+    <h2>🐍 Snake Game</h2>
+    <canvas id="gameCanvas" width="400" height="400"
+            style="border:1px solid #000; background:#f0f0f0;"></canvas>
+    <p>Use arrow keys to move the snake.</p>
+    <p>Score: <span id="score">0</span></p>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+
+        let snake = [{x: 10, y: 10}];
+        let velocity = {x: 0, y: 0};  // Start still
+        let food = {x: 15, y: 15};
+        let score = 0;
+
+        document.addEventListener('keydown', e => {
+            switch(e.key) {
+                case 'ArrowUp':
+                    if (velocity.y === 1) break;
+                    velocity = {x: 0, y: -1};
+                    break;
+                case 'ArrowDown':
+                    if (velocity.y === -1) break;
+                    velocity = {x: 0, y: 1};
+                    break;
+                case 'ArrowLeft':
+                    if (velocity.x === 1) break;
+                    velocity = {x: -1, y: 0};
+                    break;
+                case 'ArrowRight':
+                    if (velocity.x === -1) break;
+                    velocity = {x: 1, y: 0};
+                    break;
+            }
+        });
+
+        function gameLoop() {
+            if (velocity.x === 0 && velocity.y === 0) {
+                // Not moving yet — just draw snake and food
+                drawGame();
+                return;
+            }
+
+            // Move snake head
+            const head = {...snake[0]};
+            head.x += velocity.x;
+            head.y += velocity.y;
+
+            // Wall collision — wrap around
+            if (head.x < 0) head.x = tileCount - 1;
+            if (head.x >= tileCount) head.x = 0;
+            if (head.y < 0) head.y = tileCount - 1;
+            if (head.y >= tileCount) head.y = 0;
+
+            // Check collision with body
+            for (let part of snake) {
+                if (part.x === head.x && part.y === head.y) {
+                    alert('Game Over! Your score was: ' + score);
+                    resetGame();
+                    return;
+                }
+            }
+
+            snake.unshift(head);
+
+            // Check food collision
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                updateScore();
+                food = randomFoodPosition();
+            } else {
+                snake.pop();
+            }
+
+            drawGame();
+        }
+
+        function drawGame() {
+            ctx.fillStyle = '#f0f0f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake
+            ctx.fillStyle = '#27ae60';
+            for (let part of snake) {
+                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+            }
+
+            // Draw food
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+        }
+
+        function randomFoodPosition() {
+            let position;
+            while (true) {
+                position = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+                let collision = snake.some(part => part.x === position.x && part.y === position.y);
+                if (!collision) break;
+            }
+            return position;
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function resetGame() {
+            snake = [{x: 10, y: 10}];
+            velocity = {x: 0, y: 0};
+            score = 0;
+            food = randomFoodPosition();
+            updateScore();
+            drawGame();
+        }
+
+        setInterval(gameLoop, 100);
+
+        // Initial draw
+        drawGame();
+    </script>
+</div>

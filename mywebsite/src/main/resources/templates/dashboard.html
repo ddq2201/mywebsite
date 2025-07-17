@@ -1,0 +1,52 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <h1>📊 Dashboard Overview</h1>
+
+    <div class="chart-container">
+        <canvas id="userChart"></canvas>
+    </div>
+
+    <style>
+        .chart-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 2em auto;
+        }
+
+        #userChart {
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 1em;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const ctx = document.getElementById('userChart').getContext('2d');
+        const userCounts = /*[[${userCounts}]]*/ [0, 0, 0, 0, 0, 0];
+        const labels = /*[[${labels}]]*/ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'New Users',
+                    data: userCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</div>

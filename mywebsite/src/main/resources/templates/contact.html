@@ -1,0 +1,21 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+    <h2 th:text="${message}">Contact Us</h2>
+    <p>You can reach us at:</p>
+    <ul>
+        <li>Email: support@example.com</li>
+        <li>Phone: +84 123 456 789</li>
+        <li>Address: 123 Spring Street, HCM City, Vietnam</li>
+    </ul>
+    <form method="post" action="/contact">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="5" required></textarea><br><br>
+
+        <button type="submit" class="button">Send</button>
+    </form>
+</div>
