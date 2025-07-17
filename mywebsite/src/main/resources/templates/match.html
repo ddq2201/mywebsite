@@ -1,31 +1,99 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="content">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="content"
+     style="max-width: 1200px; margin: 0 auto; padding: 1em;">
+
     <h2>⚽ Watch: Match Highlights</h2>
 
-    <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin-top: 1em;">
-        <iframe width="560" height="315"
-                src="https://www.youtube.com/embed/1Bz5FuFNW5g?si=7V18o85Xs0pLCIqK"
-                title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-                style="position:absolute; top:0; left:0; width:100%; height:100%;">
-        </iframe>
+    <!-- Sync from YouTube Form -->
+    <form th:action="@{/matches/sync}" method="get" style="display: flex; gap: 0.5em; margin-bottom: 1em;">
+        <input type="text"
+               name="query"
+               th:value="${query}"
+               placeholder="📥 Sync from YouTube (e.g. 'euro 2024')"
+               required
+               style="flex: 1; min-width: 250px; padding: 0.5em 1em; border: 1px solid #f39c12; border-radius: 6px; font-size: 1em;" />
+
+        <button type="submit"
+                class="button"
+                style="background-color: #f39c12; color: white; padding: 0.5em 1.25em; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+            🔄 Sync
+        </button>
+    </form>
+
+    <!-- Actions: Delete All + Add -->
+    <div style="display: flex; justify-content: space-between; margin-bottom: 1.5em;">
+        <form th:action="@{/matches/deleteAll}" method="post"
+              onsubmit="return confirm('Are you sure you want to delete ALL highlights?');">
+            <button type="submit" class="button" style="background-color: #e74c3c;">
+                🗑️ Remove All Highlights
+            </button>
+        </form>
+
+        <a th:href="@{/matches/new}"
+           class="button"
+           style="background-color: #2ecc71; color: white; text-decoration: none; padding: 0.5em 1.25em; border-radius: 6px; font-weight: 600;">
+            ➕ Add New Highlight
+        </a>
     </div>
 
-    <div style="margin-bottom: 3em;">
-        <h3>🇧🇷 Brazil vs 🇦🇷 Argentina</h3>
-        <p>World Cup Qualifier Highlights</p>
+    <!-- Search Form -->
+    <form th:action="@{/matches}" method="get"
+          style="display: flex; flex-wrap: wrap; gap: 1em; align-items: center; margin-bottom: 1em;">
+        <input type="text"
+               name="query"
+               th:value="${query}"
+               placeholder="🔍 Search match highlights..."
+               style="flex: 1; min-width: 200px; padding: 0.5em 1em; border: 1px solid #ccc; border-radius: 6px; font-size: 1em;" />
+
+        <button type="submit"
+                class="button"
+                style="background-color: #3498db; color: white; padding: 0.5em 1.25em; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+            🔎 Search
+        </button>
+    </form>
+
+    <!-- Video Count -->
+    <p><strong th:text="'🎞 Total videos found: ' + ${totalVideos}"></strong></p>
+
+    <!-- Video List -->
+    <div th:if="${#lists.isEmpty(videos)}">
+        <p>No videos available. Try syncing or adding new ones!</p>
+    </div>
+
+    <div th:each="v : ${videos}"
+         style="position: relative; margin-top: 2em; padding: 1em; border: 1px solid #ccc; border-radius: 8px;">
+
+        <!-- Delete Button -->
+        <form th:action="@{'/matches/' + ${v.id}}" method="post"
+              onsubmit="return confirm('Delete this highlight?');"
+              style="position: absolute; top: 0.5em; right: 0.5em;">
+            <input type="hidden" name="_method" value="delete"/>
+            <button type="submit"
+                    style="background: transparent; color: #e74c3c; border: none; font-size: 1.5em; cursor: pointer;">
+                ❌
+            </button>
+        </form>
+
+        <h3 th:text="${v.title}" style="margin-top: 0;"></h3>
+        <p th:text="${v.description}"></p>
 
         <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
-            <iframe src="https://www.youtube.com/embed/Xgqo5zzYcF4?si=frdy9sYkdA76lQBn"
-                    title="YouTube video player"
+            <iframe th:src="${v.url}"
                     style="position:absolute; top:0; left:0; width:100%; height:100%;"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen>
-            </iframe>
+                    frameborder="0" allowfullscreen></iframe>
         </div>
+    </div>
+
+    <!-- Pagination -->
+    <div style="margin-top:2em;">
+        <a th:if="${currentPage > 0}"
+           th:href="@{/matches(query=${query}, page=${currentPage - 1})}"
+           class="button">← Previous</a>
+
+        <span th:text="'Page ' + (${currentPage} + 1) + ' of ' + ${totalPages}"
+              style="margin: 0 1em;"></span>
+
+        <a th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/matches(query=${query}, page=${currentPage + 1})}"
+           class="button">Next →</a>
     </div>
 </div>

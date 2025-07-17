@@ -1,0 +1,28 @@
+<div th:fragment="content" style="max-width: 800px; margin: 2em auto; padding: 1em;">
+
+    <h2>➕ Add New Match Highlight</h2>
+
+    <form th:action="@{/matches}" method="post" style="display: flex; flex-direction: column; gap: 1em;">
+        <label>
+            Title:
+            <input type="text" name="title" placeholder="e.g. Real Madrid vs Man City" required />
+        </label>
+
+        <label>
+            Description:
+            <textarea name="description" placeholder="Match summary or key moments..." rows="4" required></textarea>
+        </label>
+
+        <label>
+            YouTube Embed URL:
+            <input type="url" name="url" placeholder="https://www.youtube.com/embed/xyz123" required />
+        </label>
+
+        <input type="hidden" name="query" th:value="${query}"/>
+
+        <div style="display: flex; gap: 1em;">
+            <button type="submit" class="button" style="background-color: #2ecc71;">💾 Save</button>
+            <a th:href="@{/matches}" class="button" style="background-color: #bdc3c7;">← Back</a>
+        </div>
+    </form>
+</div>

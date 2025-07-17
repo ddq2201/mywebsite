@@ -16,7 +16,6 @@ public class UserController {
         this.userRepo = userRepo;
     }
 
-    // Display list of users
     @GetMapping
     public String listUsers(Model model) {
         model.addAttribute("users", userRepo.findAll());
@@ -24,7 +23,6 @@ public class UserController {
         return "layout";
     }
 
-    // Show form to create a new user
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("user", new User());
@@ -32,7 +30,6 @@ public class UserController {
         return "layout";
     }
 
-    // Show form to edit an existing user
     @GetMapping("/edit/{id}")
     public String editUserForm(@PathVariable Long id, Model model) {
         User user = userRepo.findById(id)
@@ -42,21 +39,18 @@ public class UserController {
         return "layout";
     }
 
-    // Save a new user
     @PostMapping
     public String saveUser(@ModelAttribute User user) {
         userRepo.save(user);
         return "redirect:/users";
     }
 
-    // Update an existing user
     @PostMapping("/update")
     public String updateUser(@ModelAttribute User user) {
         userRepo.save(user);
         return "redirect:/users";
     }
 
-    // Delete a user
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         userRepo.deleteById(id);
