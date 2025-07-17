@@ -76,7 +76,7 @@
 <!-- Header -->
 <header class="site-header">
     <div class="container">
-        <h1 class="logo">$BASE</h1>
+        <h1 class="logo">BASE</h1>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
         <nav class="nav" id="mainNav">
@@ -95,7 +95,7 @@
 </script>
 
 <!-- Main Content -->
-<main>
+<main style="height: 100vh; overflow-y: auto;">
     <div th:replace="${contentFragment} :: content"></div>
 </main>
 

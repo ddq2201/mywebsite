@@ -50,15 +50,10 @@ public class HomeController {
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         model.addAttribute("pageTitle", "Dashboard");
-
-        // Example data for charts
         model.addAttribute("userCounts", new int[]{12, 19, 3, 5, 2, 3});
         model.addAttribute("labels", new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun"});
         model.addAttribute("contentFragment", "dashboard");
-
-        return "layout";  // dashboard.html Thymeleaf template
+        return "layout";
     }
-
-
 }
 
